@@ -1,0 +1,97 @@
+#include "Wire.h";
+#include "Adafruit_MotorShield.h";
+#include "utility/Adafruit_MS_PWMServoDriver.h";
+#include "Chrono.h";
+
+// Custom time function (just returns the number of times loop() was called).
+unsigned long _loopCount = 0;
+unsigned long loopTime() {
+  return _loopCount;
+}
+
+Chrono millisChrono;
+Chrono microsChrono(Chrono::MICROS);
+Chrono secondsChrono(Chrono::SECONDS);
+Chrono loopChrono(loopTime);
+
+class Adafruit_MotorShield;
+class Adafruit_DCMotor;
+
+Adafruit_MotorShield AFMS = Adafruit_MotorShield();  
+Adafruit_DCMotor *RF_motor = AFMS.getMotor(3);
+Adafruit_DCMotor *RR_motor = AFMS.getMotor(2);
+Adafruit_DCMotor *LF_motor = AFMS.getMotor(4);
+Adafruit_DCMotor *LR_motor = AFMS.getMotor(1);
+int loopCount = 0;
+
+int main() {
+  // put your setup code here, to run once:
+  AFMS.begin();
+  Serial.begin(57600);
+  RF_motor->setSpeed(150);
+  RR_motor->setSpeed(150);
+  LF_motor->setSpeed(150);
+  LR_motor->setSpeed(150);
+}
+  void m_loop() {
+  // Output every second.
+    if (secondsChrono.hasPassed(2)) {
+      Serial.println("PING!");
+      Serial.print("Millis chrono: "); Serial.println(millisChrono.elapsed());
+      Serial.print("Micros chrono: "); Serial.println(microsChrono.elapsed());
+      Serial.print("Loop chrono: ");   Serial.println(loopChrono.elapsed());
+      secondsChrono.restart();
+    }
+    loopCount++;
+  }
+  void Forward(){
+    RF_motor->run(FORWARD);
+      RR_motor->run(FORWARD);
+      RF_motor->run(BACKWARD);
+      RF_motor->run(BACKWARD);
+  }
+  void Forward2(){
+    m_loop();
+      Forward();
+  
+  }
+  void Backward(){
+    RF_motor->run(BACKWARD);
+    RR_motor->run(BACKWARD);
+    RF_motor->run(FORWARD);
+    RF_motor->run(FORWARD);
+}
+  void Leftward(){
+    RF_motor->run(FORWARD);
+    RR_motor->run(BACKWARD);
+    RF_motor->run(FORWARD);
+    RF_motor->run(BACKWARD);
+}
+  void Rightward(){
+    RF_motor->run(BACKWARD);
+    RR_motor->run(FORWARD);
+    RF_motor->run(BACKWARD);
+    RF_motor->run(FORWARD);
+  
+}
+  void TurnLeft(){
+    RF_motor->run(FORWARD);
+    RR_motor->run(FORWARD);
+    RF_motor->run(FORWARD);
+    RF_motor->run(FORWARD);
+  
+}
+  void TurnRight(){
+    RF_motor->run(BACKWARD);
+    RR_motor->run(BACKWARD);
+    RF_motor->run(BACKWARD);
+    RF_motor->run(BACKWARD);
+}
+
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  Forward2();{
+
+  }
+}
