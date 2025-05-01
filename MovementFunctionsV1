@@ -21,17 +21,17 @@ Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 Adafruit_DCMotor *RF_motor = AFMS.getMotor(3);
 Adafruit_DCMotor *RR_motor = AFMS.getMotor(2);
 Adafruit_DCMotor *LF_motor = AFMS.getMotor(4);
-Adafruit_DCMotor *LR_motor = AFMS.getMotor(1);
+Adafruit_DCMotor *RL_motor = AFMS.getMotor(1);
 int loopCount = 0;
 
-int main() {
+void setup() {
   // put your setup code here, to run once:
   AFMS.begin();
   Serial.begin(57600);
   RF_motor->setSpeed(150);
   RR_motor->setSpeed(150);
   LF_motor->setSpeed(150);
-  LR_motor->setSpeed(150);
+  RL_motor->setSpeed(150);
 }
   void m_loop() {
   // Output every second.
@@ -45,10 +45,10 @@ int main() {
     loopCount++;
   }
   void Forward(){
-    RF_motor->run(FORWARD);
+      RF_motor->run(FORWARD);
       RR_motor->run(FORWARD);
-      RF_motor->run(BACKWARD);
-      RF_motor->run(BACKWARD);
+      LF_motor->run(BACKWARD);
+      RL_motor->run(BACKWARD);
   }
   void Forward2(){
     m_loop();
@@ -58,40 +58,41 @@ int main() {
   void Backward(){
     RF_motor->run(BACKWARD);
     RR_motor->run(BACKWARD);
-    RF_motor->run(FORWARD);
-    RF_motor->run(FORWARD);
+    LF_motor->run(FORWARD);
+    RL_motor->run(FORWARD);
 }
   void Leftward(){
     RF_motor->run(FORWARD);
     RR_motor->run(BACKWARD);
-    RF_motor->run(FORWARD);
-    RF_motor->run(BACKWARD);
+    LF_motor->run(FORWARD);
+    RL_motor->run(BACKWARD);
 }
   void Rightward(){
     RF_motor->run(BACKWARD);
     RR_motor->run(FORWARD);
-    RF_motor->run(BACKWARD);
-    RF_motor->run(FORWARD);
+    LF_motor->run(BACKWARD);
+    RL_motor->run(FORWARD);
   
 }
   void TurnLeft(){
     RF_motor->run(FORWARD);
     RR_motor->run(FORWARD);
-    RF_motor->run(FORWARD);
-    RF_motor->run(FORWARD);
+    LF_motor->run(FORWARD);
+    RL_motor->run(FORWARD);
   
 }
   void TurnRight(){
     RF_motor->run(BACKWARD);
     RR_motor->run(BACKWARD);
-    RF_motor->run(BACKWARD);
-    RF_motor->run(BACKWARD);
+    LF_motor->run(BACKWARD);
+    RL_motor->run(BACKWARD);
 }
 
 
 void loop() {
   // put your main code here, to run repeatedly:
-  Forward2();{
-
+//  Forward2();{
+    RF_motor->run(FORWARD);
+    LF_motor->run(FORWARD);
+    delay(500);
   }
-}
